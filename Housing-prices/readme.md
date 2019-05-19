@@ -1,0 +1,1 @@
+Goal: Predict each district median housing price
