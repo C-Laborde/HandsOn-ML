@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder
 
 
 def impute_na(train_set):
@@ -13,3 +14,9 @@ def impute_na(train_set):
     housing_tr = pd.DataFrame(X, columns=housing_num.columns)
 
     return housing_tr
+
+
+def encode_cat(attribute):
+    cat_encoder = OneHotEncoder()
+    attribute_encoded = cat_encoder.fit_transform(attribute)
+    return attribute_encoded
