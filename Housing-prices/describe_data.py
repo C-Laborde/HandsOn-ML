@@ -11,7 +11,7 @@ def describe_data(df):
     print(df.describe())
     print("Info:\n")
     print(df.info())
-    df.hist()
+    df.hist(bins=50)
     plt.show()
 
 
