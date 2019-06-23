@@ -1,4 +1,5 @@
 import numpy as np
+from zlib import crc32
 
 
 def split_train_test(data, test_ratio):
@@ -8,3 +9,15 @@ def split_train_test(data, test_ratio):
     test_indices = shuffled_indices[:test_set_size]
     train_indices = shuffled_indices[test_set_size:]
     return data.iloc[train_indices], data.iloc[test_indices]
+
+
+# Next functions split test data using a hash lower than a certain value so
+# the test data doesn't change when new data is fetched
+def test_set_check(identifier, test_ratio):
+    return crc32(np.int64(identifier)) & 0xffffffff < test_ratio * 2 * 32
+
+
+def split_train_test_by_id(data, test_ratio, id_column):
+    ids = data[id_column]
+    in_test_set = ids.apply(lambda id_: test_set_check(id_, test_ratio))
+    return data.loc[~in_test_set], data.loc[in_test_set]
