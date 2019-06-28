@@ -13,7 +13,6 @@ from sklearn.preprocessing import OneHotEncoder
 from utils.combined_attributes_adder import CombinedAttributesAdder
 from sklearn.compose import ColumnTransformer
 from models.linear_regression import linear_regression
-from sklearn.linear_model import LinearRegression
 
 
 HOUSING_PATH = os.path.join("datasets", "housing")
@@ -41,6 +40,7 @@ if __name__ == "__main__":
 
     # ### CLEAN DATA THROUGH PIPELINE ####
     housing = strat_train_set.copy()
+    housing = housing.drop("median_house_value", axis=1)
     # housing = impute_na(strat_train_set)
     housing_labels = strat_train_set["median_house_value"].copy()
 
@@ -62,5 +62,8 @@ if __name__ == "__main__":
     ])
 
     housing_prepared = full_pipeline.fit_transform(housing)
+    predictions, rmse = linear_regression(housing, housing_prepared, housing_labels, full_pipeline)
     print("Model results")
-    linear_regression(housing, housing_prepared, housing_labels, full_pipeline)
+    print("Predictions: ", predictions[:5])
+    print("Labels: ", list(housing_labels[:5]))
+    print("Errors: ", rmse)

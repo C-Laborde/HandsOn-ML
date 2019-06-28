@@ -1,4 +1,6 @@
+import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 
 
 def linear_regression(data, prepared_data, labels, pipeline):
@@ -6,9 +8,8 @@ def linear_regression(data, prepared_data, labels, pipeline):
     # we fit the model to processed data
     lin_reg.fit(prepared_data, labels)
 
-    some_data = data.iloc[:5]
-    some_labels = labels.iloc[:5]
     # we test the model on raw data
-    some_data_prepared = pipeline.transform(some_data)
-    print("Predictions: ", lin_reg.predict(some_data_prepared))
-    print("Labels: ", list(some_labels))
+    data_prepared = pipeline.fit_transform(data)
+    predictions = lin_reg.predict(data_prepared)
+    mse = np.sqrt(mean_squared_error(labels, predictions))
+    return predictions, mse
