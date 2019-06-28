@@ -13,6 +13,7 @@ from sklearn.preprocessing import OneHotEncoder
 from utils.combined_attributes_adder import CombinedAttributesAdder
 from sklearn.compose import ColumnTransformer
 from models.linear_regression import linear_regression
+from models.decision_tree_regressor import decision_tree_regressor
 
 
 HOUSING_PATH = os.path.join("datasets", "housing")
@@ -62,7 +63,11 @@ if __name__ == "__main__":
     ])
 
     housing_prepared = full_pipeline.fit_transform(housing)
-    predictions, rmse = linear_regression(housing, housing_prepared, housing_labels, full_pipeline)
+    # underfitting model
+    # predictions, rmse = linear_regression(housing_prepared, housing_labels)
+
+    # overfitting model
+    predictions, rmse = decision_tree_regressor(housing_prepared, housing_labels)
     print("Model results")
     print("Predictions: ", predictions[:5])
     print("Labels: ", list(housing_labels[:5]))
