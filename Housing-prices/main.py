@@ -13,8 +13,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 from utils.combined_attributes_adder import CombinedAttributesAdder
 from sklearn.compose import ColumnTransformer
-from models.linear_regression import linear_regression
-from models.decision_tree_regressor import decision_tree_regressor
+# from models.linear_regression import linear_regression
+# from models.decision_tree_regressor import decision_tree_regressor
 from models.random_forest_regressor import random_forest_regressor
 
 
@@ -66,8 +66,8 @@ if __name__ == "__main__":
 
     housing_prepared = full_pipeline.fit_transform(housing)
     # underfitting model with cross validation
-    predictions, rmse, scores = linear_regression(housing_prepared,
-                                                  housing_labels)
+    # predictions, rmse, scores = linear_regression(housing_prepared,
+    #                                               housing_labels)
 
     # model with cross validation to improve overfitting, still too bad
     # predictions, rmse, scores = decision_tree_regressor(housing_prepared,
@@ -75,7 +75,8 @@ if __name__ == "__main__":
 
     # random forest model
     predictions, rmse, scores = random_forest_regressor(housing_prepared,
-                                                        housing_labels)
+                                                        housing_labels,
+                                                        save=True)
     print("Model results")
     print("Predictions: ", predictions[:5])
     print("Labels: ", list(housing_labels[:5]))
