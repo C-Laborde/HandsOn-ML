@@ -16,6 +16,7 @@ from sklearn.compose import ColumnTransformer
 # from models.linear_regression import linear_regression
 # from models.decision_tree_regressor import decision_tree_regressor
 from models.random_forest_regressor import random_forest_regressor
+from models.random_forest_regressor import random_forest_grid_search
 
 
 HOUSING_PATH = os.path.join("datasets", "housing")
@@ -76,7 +77,7 @@ if __name__ == "__main__":
     # random forest model
     predictions, rmse, scores = random_forest_regressor(housing_prepared,
                                                         housing_labels,
-                                                        save=True)
+                                                        save=False)
     print("Model results")
     print("Predictions: ", predictions[:5])
     print("Labels: ", list(housing_labels[:5]))
@@ -87,3 +88,13 @@ if __name__ == "__main__":
     print("Scores: ", tree_rmse_scores)
     print("Mean: ", tree_rmse_scores.mean())
     print("Standard deviation: ", tree_rmse_scores.std())
+
+    # grid search
+    grid_search = random_forest_grid_search(housing_prepared, housing_labels)
+    print("\n")
+    print("Grid search results: ")
+    print("Best Params: ", grid_search.best_params_)
+    print("Best estimator: ", grid_search.best_estimator_)
+    cvres = grid_search.cv_results_
+    for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
+        print(np.sqrt(-mean_score), params)
