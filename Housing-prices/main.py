@@ -1,4 +1,5 @@
 import os
+import numpy as np
 from utils.load_data import load_data
 # from describe_data import describe_data
 # from utils.test_data import split_train_test_by_id
@@ -63,12 +64,20 @@ if __name__ == "__main__":
     ])
 
     housing_prepared = full_pipeline.fit_transform(housing)
-    # underfitting model
-    # predictions, rmse = linear_regression(housing_prepared, housing_labels)
+    # underfitting model with cross validation
+    predictions, rmse, scores = linear_regression(housing_prepared,
+                                                  housing_labels)
 
-    # overfitting model
-    predictions, rmse = decision_tree_regressor(housing_prepared, housing_labels)
+    # model with cross validation to improve overfitting, still too bad
+    # predictions, rmse, scores = decision_tree_regressor(housing_prepared,
+    #                                                     housing_labels)
     print("Model results")
     print("Predictions: ", predictions[:5])
     print("Labels: ", list(housing_labels[:5]))
     print("Errors: ", rmse)
+
+    tree_rmse_scores = np.sqrt(-scores)
+    print("Cross validation results:")
+    print("Scores: ", tree_rmse_scores)
+    print("Mean: ", tree_rmse_scores.mean())
+    print("Standard deviation: ", tree_rmse_scores.std())
