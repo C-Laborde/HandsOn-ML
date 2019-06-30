@@ -13,7 +13,7 @@ def random_forest_regressor(data_prepared, labels, save=False):
     scores = cross_val_score(forest_reg, data_prepared, labels,
                              scoring="neg_mean_squared_error", cv=10)
     if save:
-        # save model hyperparameters and trained parameters, scores and predictors
+        # save model hyperparams, trained params, scores and predictors
         path = "model_results/"
         joblib.dump(forest_reg, path + "forest_reg.pkl")
     return predictions, rmse, scores
