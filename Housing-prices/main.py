@@ -17,6 +17,8 @@ from sklearn.compose import ColumnTransformer
 # from models.decision_tree_regressor import decision_tree_regressor
 from models.random_forest_regressor import random_forest_regressor
 from models.random_forest_regressor import random_forest_grid_search
+from sklearn.metrics import mean_squared_error
+from scipy import stats
 
 
 HOUSING_PATH = os.path.join("datasets", "housing")
@@ -98,3 +100,21 @@ if __name__ == "__main__":
     cvres = grid_search.cv_results_
     for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
         print(np.sqrt(-mean_score), params)
+
+    # evaluate the final model on the test set
+    final_model = grid_search.best_estimator_
+    X_test = strat_test_set.drop("median_house_value", axis=1)
+    y_test = strat_test_set["median_house_value"].copy()
+
+    X_test_prepared = full_pipeline.transform(X_test)
+
+    final_predictions = final_model.predict(X_test_prepared)
+    final_mse = mean_squared_error(y_test, final_predictions)
+    final_rmse = np.sqrt(final_mse)
+
+    # confidence
+    confidence = 0.95
+    squared_errors = (final_predictions - y_test) ** 2
+    print(np.sqrt(stats.t.interval(confidence, len(squared_errors) - 1,
+                                   loc=squared_errors.mean(),
+                                   scale=stats.sem(squared_errors))))
