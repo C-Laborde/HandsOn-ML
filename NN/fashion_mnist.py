@@ -9,9 +9,16 @@ y_valid, y_train = y_train_full[:5000], y_train_full[5000:]
 class_names = ["T-shirt/top", "Trouser", "Pullover", "Dress", "Coat", "Sandal",
                "Shirt", "Sneaker", "Bag", "Ankle boot"]
 
-# Model with two hidden layers
-model = keras.models.Sequential()
-model.add(keras.layers.Flatten(input_shape=[28, 28]))
-model.add(keras.layers.Dense(300, activation="relu"))
-model.add(keras.layers.Dense(100, activation="relu"))
-model.add(keras.layers.Dense(10, activation="softmax"))
+# Sequential model with two hidden layers
+model = keras.models.Sequential([
+    keras.layers.Flatten(input_shape=[28, 28]),
+    keras.layers.Dense(300, activation="relu"),
+    keras.layers.Dense(100, activation="relu"),
+    keras.layers.Dense(10, activation="softmax")
+])
+
+
+# Model compilation
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="sgd",
+              metrics=["accuracy"])
