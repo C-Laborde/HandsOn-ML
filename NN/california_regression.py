@@ -11,7 +11,7 @@ X_train_full, X_test, y_train_full, y_test = train_test_split(housing.data,
 
 X_train, X_valid, y_train, y_valid = train_test_split(X_train_full,
                                                       y_train_full)
-                                            
+                                         
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_valid_scaled = scaler.transform(X_valid)
@@ -28,4 +28,7 @@ history = model.fit(X_train, y_train, epochs=20,
 mse_test = model.evaluate(X_test, y_test)
 X_new = X_test[:3]
 y_pred = model.predict(X_new)
+
+print("Target: ", X_new)
+print("Pred: ", y_pred)
                                                     
