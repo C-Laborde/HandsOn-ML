@@ -11,7 +11,7 @@ X_train_full, X_test, y_train_full, y_test = train_test_split(housing.data,
 
 X_train, X_valid, y_train, y_valid = train_test_split(X_train_full,
                                                       y_train_full)
-                                         
+
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_valid_scaled = scaler.transform(X_valid)
@@ -34,12 +34,10 @@ X_test_A, X_test_B = X_test[:, :5], X_test[:, 2:]
 X_new_A, X_new_B = X_test_A[:3], X_test_B[:3]
 
 history = model.fit((X_train_A, X_train_B), y_train, epochs=20,
-
-validation_data=((X_valid_A, X_valid_B), y_valid))
+                    validation_data=((X_valid_A, X_valid_B), y_valid))
 
 mse_test = model.evaluate((X_test_A, X_test_B), y_test)
 y_pred = model.predict((X_new_A, X_new_B))
 
 print("Target: ", X_test_A, X_test_B)
 print("Pred: ", y_pred)
-                                                    
