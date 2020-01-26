@@ -1,3 +1,6 @@
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 
 
@@ -20,3 +23,25 @@ class WideAndDeepModel(keras.models.Model):
 
 
 model = WideAndDeepModel()
+
+# input preparation
+housing = fetch_california_housing()
+
+X_train_full, X_test, y_train_full, y_test = train_test_split(housing.data,
+                                                              housing.target)
+
+X_train, X_valid, y_train, y_valid = train_test_split(X_train_full,
+                                                      y_train_full)
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_valid_scaled = scaler.transform(X_valid)
+X_test_scaled = scaler.transform(X_test)
+
+# Model with multiple inputs
+input_A = keras.layers.Input(shape=[5])
+input_B = keras.layers.Input(shape=[6])
+
+model.call([input_A, input_B])
+
+print(model.main_output, model.aux_output)
